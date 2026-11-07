@@ -4,6 +4,21 @@ bundle:
 include:
   - resources/*.yml
 
+resources:
+  jobs:
+    hrdp_data_quality_job:
+      name: "[${bundle.target}] HRDP Data Quality Job"
+
+      tasks:
+        - task_key: run_data_quality
+
+          python_wheel_task:
+            package_name: hrdp
+            entry_point: run
+
+          libraries:
+            - whl: ../dist/*.whl
+
 artifacts:
   default:
     type: whl
