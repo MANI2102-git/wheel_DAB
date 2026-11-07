@@ -1,0 +1,17 @@
+
+bundle:
+  name: hrdp
+
+artifacts:
+  default:
+    type: whl
+    path: .
+    build: |
+      python -m pip install --upgrade setuptools wheel
+      python setup.py bdist_wheel
+
+targets:
+  dev:
+    mode: development
+    workspace:
+      host: https://dbc-34326fb0-8193.cloud.databricks.com/
