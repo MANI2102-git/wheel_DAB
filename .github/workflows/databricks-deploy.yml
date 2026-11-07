@@ -1,19 +1,13 @@
-
-name: Databricks CI-CD Deployment
+name: Deploy Databricks Bundle
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - feature_cicd
-
-  workflow_dispatch:
-
-permissions:
-  contents: read
+      - main
 
 jobs:
   deploy:
-    name: Deploy to Databricks Dev
     runs-on: ubuntu-latest
 
     env:
@@ -23,14 +17,17 @@ jobs:
       DATABRICKS_AUTH_TYPE: oauth-m2m
 
     steps:
-      - name: Checkout GitHub Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
 
-      - name: Validate DAB Configuration
+      - name: Check CLI version
+        run: databricks -v
+
+      - name: Validate bundle
         run: databricks bundle validate --target dev
 
-      - name: Deploy to Databricks
+      - name: Deploy bundle 
         run: databricks bundle deploy --target dev
