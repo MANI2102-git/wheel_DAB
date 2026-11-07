@@ -2,13 +2,22 @@ name: Deploy Databricks Bundle
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+    inputs:
+      target:
+        description: Select deployment environment
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ inputs.target }}
 
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -27,7 +36,7 @@ jobs:
         run: databricks -v
 
       - name: Validate bundle
-        run: databricks bundle validate --target dev
+        run: databricks bundle validate --target ${{inputs.target}}
 
       - name: Deploy bundle 
-        run: databricks bundle deploy --target dev
+        run: databricks bundle deploy --target ${{inputs.target}}
