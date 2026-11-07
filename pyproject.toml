@@ -13,6 +13,9 @@ dependencies = [
     "pandas"
 ]
 
+[project.scripts]
+run = "hrdp.main:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
